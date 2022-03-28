@@ -1,27 +1,28 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
 
+import Home from '@/views/Home/Home.vue'
+import User from '@/views/User/User.vue'
+
+// 使用插件
 Vue.use(VueRouter)
 
+// 路由规则的数组
 const routes = [
-  {
-    path: '/',
-    name: 'Home',
-    component: Home
-  },
-  {
-    path: '/about',
-    name: 'About',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-  }
+  { path: '/', component: Home, mata: { isRecord: true, top: 0 } },
+  { path: '/user', component: User }
 ]
 
+// 创建路由实例对象
 const router = new VueRouter({
-  routes
+  routes,
+  scrollBehavior(to, from, savedPosition) {
+    if (savedPosition) {
+      return savedPosition
+    } else {
+      return { x: 0, y: to.meta.top || 0 }
+    }
+  }
 })
 
 export default router
